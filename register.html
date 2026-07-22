@@ -1,73 +1,81 @@
+
 <!DOCTYPE html>
 <html lang="my">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CCYK Register</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+  <title>CCYK Register</title>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <header>
-    <h1>❤️ CCYK</h1>
-    <p>အကောင့်အသစ်ဖွင့်ရန်</p>
+  <h1>❤️ CCYK</h1>
+  <p>အကောင့်အသစ်ဖွင့်ရန်</p>
 </header>
 
 <main>
 
-<div class="card">
+  <div class="card">
 
-<h2>Create Account</h2>
+    <h2>Create Account</h2>
 
-<input
-type="text"
-placeholder="အမည်">
+    <form id="registerForm">
 
-<br><br>
+      <label for="registerName">အမည်</label>
+      <input
+        type="text"
+        id="registerName"
+        placeholder="အမည်ထည့်ပါ"
+        required
+      >
 
-<input
-type="number"
-placeholder="အသက်">
+      <label for="registerAge">အသက်</label>
+      <input
+        type="number"
+        id="registerAge"
+        min="18"
+        max="100"
+        placeholder="အသက်ထည့်ပါ"
+        required
+      >
 
-<br><br>
+      <label for="registerPhone">ဖုန်းနံပါတ်</label>
+      <input
+        type="tel"
+        id="registerPhone"
+        placeholder="09xxxxxxxxx"
+        required
+      >
 
-<input
-type="tel"
-placeholder="ဖုန်းနံပါတ်">
+      <label for="registerPassword">စကားဝှက်</label>
+      <input
+        type="password"
+        id="registerPassword"
+        minlength="4"
+        placeholder="စကားဝှက်ထည့်ပါ"
+        required
+      >
 
-<br><br>
+      <button type="submit">
+        Create Account
+      </button>
 
-<input
-type="password"
-placeholder="စကားဝှက်">
+    </form>
 
-<br><br>
+    <p id="registerMessage"></p>
 
-<button>
+    <p>
+      အကောင့်ရှိပြီးသားလား။
+      <a href="login.html">Login</a>
+    </p>
 
-Create Account
+    <a href="index.html">← Home</a>
 
-</button>
-
-<br><br>
-
-<a href="login.html">
-
-Login
-
-</a>
-
-<br><br>
-
-<a href="index.html">
-
-Home
-
-</a>
-
-</div>
+  </div>
 
 </main>
 
