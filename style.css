@@ -128,3 +128,38 @@ form label {
 .card a:hover {
   text-decoration: underline;
 }
+.profile-card{
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+    margin-top:20px;
+}
+
+.profile-card img{
+    width:100%;
+    display:block;
+}
+
+.profile-info{
+    padding:20px;
+}
+
+.profile-info h2{
+    margin-bottom:8px;
+    color:#ff4d6d;
+}
+
+.profile-info p{
+    color:#666;
+    margin-bottom:15px;
+}
+
+.action-buttons{
+    display:flex;
+    gap:10px;
+}
+
+.action-buttons button{
+    flex:1;
+}
