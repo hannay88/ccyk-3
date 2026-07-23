@@ -98,3 +98,33 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+const registerForm = document.getElementById("registerForm");
+
+if (registerForm) {
+
+registerForm.addEventListener("submit", function(e) {
+
+e.preventDefault();
+
+const user = {
+name: document.getElementById("registerName").value,
+age: document.getElementById("registerAge").value,
+phone: document.getElementById("registerPhone").value,
+password: document.getElementById("registerPassword").value,
+city: document.getElementById("registerCity").value,
+hobby: document.getElementById("registerHobby").value,
+photo: document.getElementById("registerPhoto").value
+};
+
+localStorage.setItem("ccykUser", JSON.stringify(user));
+
+document.getElementById("registerMessage").innerHTML =
+"✅ Account Created Successfully";
+
+setTimeout(() => {
+window.location.href = "index.html";
+}, 1500);
+
+});
+
+}
