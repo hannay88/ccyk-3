@@ -1,21 +1,63 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const buttons = document.querySelectorAll("button");
 
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const action = button.textContent.trim();
+const registerForm = document.getElementById("registerForm");
 
-      if (action === "Login") {
-        alert("Login Page ကို နောက်အဆင့်မှာ ထည့်ပါမယ်။");
-      } else if (action === "Register") {
-        alert("Register Page ကို နောက်အဆင့်မှာ ထည့်ပါမယ်။");
-      } else if (action === "Find Match") {
-        alert("Dating Match System ကို နောက်အဆင့်မှာ ထည့်ပါမယ်။");
-      } else if (action === "Open Marketplace") {
-        alert("Marketplace ကို နောက်အဆင့်မှာ ထည့်ပါမယ်။");
-      } else if (action === "Advertise") {
-        alert("Advertisement တင်ရန်စနစ်ကို နောက်အဆင့်မှာ ထည့်ပါမယ်။");
-      }
-    });
-  });
+if(registerForm){
+
+registerForm.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const user={
+
+name:document.getElementById("registerName").value,
+
+age:document.getElementById("registerAge").value,
+
+phone:document.getElementById("registerPhone").value,
+
+password:document.getElementById("registerPassword").value
+
+};
+
+localStorage.setItem("ccykUser",JSON.stringify(user));
+
+alert("Account Created Successfully");
+
+window.location.href="login.html";
+
+});
+
+}
+
+const loginForm=document.getElementById("loginForm");
+
+if(loginForm){
+
+loginForm.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const phone=document.getElementById("phone").value;
+
+const password=document.getElementById("password").value;
+
+const saved=JSON.parse(localStorage.getItem("ccykUser"));
+
+if(saved && saved.phone===phone && saved.password===password){
+
+alert("Welcome "+saved.name);
+
+window.location.href="index.html";
+
+}else{
+
+alert("Wrong Phone or Password");
+
+}
+
+});
+
+}
+
 });
