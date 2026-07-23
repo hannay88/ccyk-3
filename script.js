@@ -1,155 +1,104 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const registerForm = document.getElementById("registerForm");
 
-const registerForm = document.getElementById("registerForm");
+  if (registerForm) {
+    registerForm.addEventListener("submit", (event) => {
+      event.preventDefault();
 
-if(registerForm){
+      const user = {
+        name: document.getElementById("registerName").value.trim(),
+        age: document.getElementById("registerAge").value,
+        phone: document.getElementById("registerPhone").value.trim(),
+        password: document.getElementById("registerPassword").value
+      };
 
-registerForm.addEventListener("submit",function(e){
+      localStorage.setItem("ccykUser", JSON.stringify(user));
+      alert("Account Created Successfully");
+      window.location.href = "login.html";
+    });
+  }
 
-e.preventDefault();
+  const loginForm = document.getElementById("loginForm");
 
-const user={
+  if (loginForm) {
+    loginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
 
-name:document.getElementById("registerName").value,
+      const phone = document.getElementById("phone").value.trim();
+      const password = document.getElementById("password").value;
+      const savedUser = JSON.parse(localStorage.getItem("ccykUser"));
 
-age:document.getElementById("registerAge").value,
+      if (
+        savedUser &&
+        savedUser.phone === phone &&
+        savedUser.password === password
+      ) {
+        alert("Welcome " + savedUser.name);
+        window.location.href = "index.html";
+      } else {
+        alert("Wrong Phone or Password");
+      }
+    });
+  }
 
-phone:document.getElementById("registerPhone").value,
+  const profiles = [
+    {
+      name: "Su Su",
+      age: 23,
+      city: "Yangon",
+      hobby: "Coffee ☕ | Travel ✈️ | Music 🎵",
+      photo: "https://picsum.photos/seed/susu/500/600"
+    },
+    {
+      name: "Aye Aye",
+      age: 25,
+      city: "Mandalay",
+      hobby: "Reading 📚 | Movies 🎬",
+      photo: "https://picsum.photos/seed/ayeaye/500/600"
+    },
+    {
+      name: "May May",
+      age: 22,
+      city: "Bago",
+      hobby: "Food 🍜 | Singing 🎤",
+      photo: "https://picsum.photos/seed/maymay/500/600"
+    }
+  ];
 
-password:document.getElementById("registerPassword").value
+  let currentProfile = 0;
 
-};
+  const profilePhoto = document.getElementById("profilePhoto");
+  const profileName = document.getElementById("profileName");
+  const profileCity = document.getElementById("profileCity");
+  const profileHobby = document.getElementById("profileHobby");
+  const likeBtn = document.getElementById("likeBtn");
+  const passBtn = document.getElementById("passBtn");
 
-localStorage.setItem("ccykUser",JSON.stringify(user));
+  function showProfile() {
+    if (!profilePhoto || !profileName || !profileCity || !profileHobby) {
+      return;
+    }
 
-alert("Account Created Successfully");
+    const profile = profiles[currentProfile];
 
-window.location.href="login.html";
+    profilePhoto.src = profile.photo;
+    profileName.textContent = `${profile.name} • ${profile.age}`;
+    profileCity.textContent = `📍 ${profile.city}`;
+    profileHobby.textContent = profile.hobby;
+  }
 
+  function nextProfile() {
+    currentProfile = (currentProfile + 1) % profiles.length;
+    showProfile();
+  }
+
+  if (likeBtn) {
+    likeBtn.addEventListener("click", nextProfile);
+  }
+
+  if (passBtn) {
+    passBtn.addEventListener("click", nextProfile);
+  }
+
+  showProfile();
 });
-
-}
-
-const loginForm=document.getElementById("loginForm");
-
-if(loginForm){
-
-loginForm.addEventListener("submit",function(e){
-
-e.preventDefault();
-
-const phone=document.getElementById("phone").value;
-
-const password=document.getElementById("password").value;
-
-const saved=JSON.parse(localStorage.getItem("ccykUser"));
-
-if(saved && saved.phone===phone && saved.password===password){
-
-alert("Welcome "+saved.name);
-
-window.location.href="index.html";
-
-}else{
-
-alert("Wrong Phone or Password");
-
-}
-
-});
-
-}
-
-});
-const likeBtn=document.getElementById("likeBtn");
-
-if(likeBtn){
-
-likeBtn.onclick=function(){
-
-alert("❤️ You Liked Su Su");
-
-}
-
-}
-
-const passBtn=document.getElementById("passBtn");
-
-if(passBtn){
-
-passBtn.onclick=function(){
-
-alert("Next Profile");
-
-}
-
-}
-const profiles = [
-{
-name:"Su Su",
-age:23,
-city:"Yangon",
-hobby:"Coffee ☕ | Travel ✈️ | Music 🎵",
-photo:"https://picsum.photos/500/600?1"
-},
-{
-name:"Aye Aye",
-age:25,
-city:"Mandalay",
-hobby:"Reading 📚 | Movies 🎬",
-photo:"https://picsum.photos/500/600?2"
-},
-{
-name:"May May",
-age:22,
-city:"Bago",
-hobby:"Food 🍜 | Singing 🎤",
-photo:"https://picsum.photos/500/600?3"
-}
-];
-
-let currentProfile = 0;
-function showProfile() {
-
-document.getElementById("profilePhoto").src = profiles[currentProfile].photo;
-
-document.getElementById("profileName").innerHTML =
-profiles[currentProfile].name + " • " + profiles[currentProfile].age;
-
-document.getElementById("profileCity").innerHTML =
-"📍 " + profiles[currentProfile].city;
-
-document.getElementById("profileHobby").innerHTML =
-profiles[currentProfile].hobby;
-
-}
-
-showProfile();
-
-document.getElementById("likeBtn").onclick = function(){
-
-currentProfile++;
-
-if(currentProfile>=profiles.length){
-
-currentProfile=0;
-
-}
-
-showProfile();
-
-}
-
-document.getElementById("passBtn").onclick = function(){
-
-currentProfile++;
-
-if(currentProfile>=profiles.length){
-
-currentProfile=0;
-
-}
-
-showProfile();
-
-}
