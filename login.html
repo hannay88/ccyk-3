@@ -1,61 +1,55 @@
 <!DOCTYPE html>
 <html lang="my">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>CCYK Login</title>
-
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCYK Login</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <header>
-  <h1>❤️ CCYK</h1>
-  <p>အကောင့်ဝင်ရန်</p>
+<h1>❤️ CCYK</h1>
+<p>Login</p>
 </header>
 
 <main>
 
-  <div class="card">
+<div class="card">
 
-    <h2>Login</h2>
+<h2>Welcome Back</h2>
 
-    <form id="loginForm">
+<form id="loginForm">
 
-      <label for="phone">ဖုန်းနံပါတ်</label>
+<label>Phone Number</label>
+<input
+type="tel"
+id="phone"
+placeholder="09xxxxxxxxx"
+required>
 
-      <input
-        type="tel"
-        id="phone"
-        placeholder="09xxxxxxxxx"
-        required
-      >
+<label>Password</label>
+<input
+type="password"
+id="password"
+placeholder="Password"
+required>
 
-      <label for="password">စကားဝှက်</label>
+<button type="submit">
+Login
+</button>
 
-      <input
-        type="password"
-        id="password"
-        placeholder="စကားဝှက်ထည့်ပါ"
-        required
-      >
+</form>
 
-      <button type="submit">
-        Login
-      </button>
+<p>
+Account မရှိသေးဘူးလား?
+<a href="register.html">Register</a>
+</p>
 
-    </form>
+<a href="index.html">← Home</a>
 
-    <p>
-      အကောင့်မရှိသေးပါက
-      <a href="register.html">Register</a>
-    </p>
-
-    <a href="index.html">← Home သို့ပြန်သွားရန်</a>
-
-  </div>
+</div>
 
 </main>
 
