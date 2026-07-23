@@ -84,3 +84,28 @@ alert("Next Profile");
 }
 
 }
+const profiles = [
+{
+name:"Su Su",
+age:23,
+city:"Yangon",
+hobby:"Coffee ☕ | Travel ✈️ | Music 🎵",
+photo:"https://picsum.photos/500/600?1"
+},
+{
+name:"Aye Aye",
+age:25,
+city:"Mandalay",
+hobby:"Reading 📚 | Movies 🎬",
+photo:"https://picsum.photos/500/600?2"
+},
+{
+name:"May May",
+age:22,
+city:"Bago",
+hobby:"Food 🍜 | Singing 🎤",
+photo:"https://picsum.photos/500/600?3"
+}
+];
+
+let currentProfile = 0;
