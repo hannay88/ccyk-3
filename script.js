@@ -109,3 +109,47 @@ photo:"https://picsum.photos/500/600?3"
 ];
 
 let currentProfile = 0;
+function showProfile() {
+
+document.getElementById("profilePhoto").src = profiles[currentProfile].photo;
+
+document.getElementById("profileName").innerHTML =
+profiles[currentProfile].name + " • " + profiles[currentProfile].age;
+
+document.getElementById("profileCity").innerHTML =
+"📍 " + profiles[currentProfile].city;
+
+document.getElementById("profileHobby").innerHTML =
+profiles[currentProfile].hobby;
+
+}
+
+showProfile();
+
+document.getElementById("likeBtn").onclick = function(){
+
+currentProfile++;
+
+if(currentProfile>=profiles.length){
+
+currentProfile=0;
+
+}
+
+showProfile();
+
+}
+
+document.getElementById("passBtn").onclick = function(){
+
+currentProfile++;
+
+if(currentProfile>=profiles.length){
+
+currentProfile=0;
+
+}
+
+showProfile();
+
+}
