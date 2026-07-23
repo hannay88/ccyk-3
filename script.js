@@ -128,3 +128,29 @@ window.location.href = "index.html";
 });
 
 }
+const savedUser = JSON.parse(localStorage.getItem("ccykUser"));
+
+if (savedUser) {
+
+  const photo = document.getElementById("profilePhoto");
+  const name = document.getElementById("profileName");
+  const city = document.getElementById("profileCity");
+  const hobby = document.getElementById("profileHobby");
+
+  if (photo && savedUser.photo) {
+    photo.src = savedUser.photo;
+  }
+
+  if (name) {
+    name.textContent = `${savedUser.name} • ${savedUser.age}`;
+  }
+
+  if (city) {
+    city.textContent = `📍 ${savedUser.city}`;
+  }
+
+  if (hobby) {
+    hobby.textContent = savedUser.hobby;
+  }
+
+}
