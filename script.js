@@ -61,3 +61,26 @@ alert("Wrong Phone or Password");
 }
 
 });
+const likeBtn=document.getElementById("likeBtn");
+
+if(likeBtn){
+
+likeBtn.onclick=function(){
+
+alert("❤️ You Liked Su Su");
+
+}
+
+}
+
+const passBtn=document.getElementById("passBtn");
+
+if(passBtn){
+
+passBtn.onclick=function(){
+
+alert("Next Profile");
+
+}
+
+}
