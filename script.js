@@ -1,46 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const registerForm = document.getElementById("registerForm");
-
-  if (registerForm) {
-    registerForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-
-      const user = {
-        name: document.getElementById("registerName").value.trim(),
-        age: document.getElementById("registerAge").value,
-        phone: document.getElementById("registerPhone").value.trim(),
-        password: document.getElementById("registerPassword").value
-      };
-
-      localStorage.setItem("ccykUser", JSON.stringify(user));
-      alert("Account Created Successfully");
-      window.location.href = "login.html";
-    });
-  }
-
-  const loginForm = document.getElementById("loginForm");
-
-  if (loginForm) {
-    loginForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-
-      const phone = document.getElementById("phone").value.trim();
-      const password = document.getElementById("password").value;
-      const savedUser = JSON.parse(localStorage.getItem("ccykUser"));
-
-      if (
-        savedUser &&
-        savedUser.phone === phone &&
-        savedUser.password === password
-      ) {
-        alert("Welcome " + savedUser.name);
-        window.location.href = "index.html";
-      } else {
-        alert("Wrong Phone or Password");
-      }
-    });
-  }
-
+document.addEventListener("DOMContentLoaded", function () {
   const profiles = [
     {
       name: "Su Su",
@@ -75,30 +33,68 @@ document.addEventListener("DOMContentLoaded", () => {
   const passBtn = document.getElementById("passBtn");
 
   function showProfile() {
-    if (!profilePhoto || !profileName || !profileCity || !profileHobby) {
-      return;
-    }
-
     const profile = profiles[currentProfile];
 
     profilePhoto.src = profile.photo;
-    profileName.textContent = `${profile.name} • ${profile.age}`;
-    profileCity.textContent = `📍 ${profile.city}`;
+    profileName.textContent = profile.name + " • " + profile.age;
+    profileCity.textContent = "📍 " + profile.city;
     profileHobby.textContent = profile.hobby;
   }
 
   function nextProfile() {
-    currentProfile = (currentProfile + 1) % profiles.length;
+    currentProfile++;
+
+    if (currentProfile >= profiles.length) {
+      currentProfile = 0;
+    }
+
     showProfile();
   }
 
-  if (likeBtn) {
-    likeBtn.addEventListener("click", nextProfile);
-  }
-
-  if (passBtn) {
-    passBtn.addEventListener("click", nextProfile);
-  }
+  likeBtn.addEventListener("click", nextProfile);
+  passBtn.addEventListener("click", nextProfile);
 
   showProfile();
+
+  const registerForm = document.getElementById("registerForm");
+
+  if (registerForm) {
+    registerForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const user = {
+        name: document.getElementById("registerName").value.trim(),
+        age: document.getElementById("registerAge").value,
+        phone: document.getElementById("registerPhone").value.trim(),
+        password: document.getElementById("registerPassword").value
+      };
+
+      localStorage.setItem("ccykUser", JSON.stringify(user));
+      alert("Account Created Successfully");
+      window.location.href = "login.html";
+    });
+  }
+
+  const loginForm = document.getElementById("loginForm");
+
+  if (loginForm) {
+    loginForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const phone = document.getElementById("phone").value.trim();
+      const password = document.getElementById("password").value;
+      const savedUser = JSON.parse(localStorage.getItem("ccykUser"));
+
+      if (
+        savedUser &&
+        savedUser.phone === phone &&
+        savedUser.password === password
+      ) {
+        alert("Welcome " + savedUser.name);
+        window.location.href = "index.html";
+      } else {
+        alert("Wrong Phone or Password");
+      }
+    });
+  }
 });
