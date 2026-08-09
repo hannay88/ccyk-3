@@ -172,26 +172,24 @@ document.addEventListener("DOMContentLoaded", function () {
  if (likeBtn) {
   likeBtn.addEventListener("click", function () {
 
-    const savedUser =
-      JSON.parse(localStorage.getItem("ccykUser"));
+    const profile = profiles[currentProfile];
 
-    let profile;
+    let likedProfiles =
+      JSON.parse(localStorage.getItem("likedProfiles")) || [];
 
-    if (savedUser && currentProfile === 0) {
-      profile = savedUser;
-    } else {
-      const index = savedUser
-        ? currentProfile - 1
-        : currentProfile;
+    const alreadyLiked = likedProfiles.some(function (item) {
+      return item.name === profile.name &&
+             item.age === profile.age;
+    });
 
-      profile = profiles[index % profiles.length];
-    }
-
-    if (profile) {
-      let likedProfiles =
-        JSON.parse(localStorage.getItem("likedProfiles")) || [];
-
-      likedProfiles.push(profile);
+    if (!alreadyLiked) {
+      likedProfiles.push({
+        name: profile.name,
+        age: profile.age,
+        city: profile.city,
+        hobby: profile.hobby,
+        photo: profile.photo
+      });
 
       localStorage.setItem(
         "likedProfiles",
@@ -202,6 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
     nextProfile();
   });
 }
+ 
 
   if (passBtn) {
     passBtn.addEventListener(
