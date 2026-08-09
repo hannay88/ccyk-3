@@ -625,7 +625,18 @@ document.addEventListener("DOMContentLoaded", function () {
   // =========================
   // START
   // =========================
+const bgMusic = document.getElementById("bgMusic");
 
+if (bgMusic) {
+  bgMusic.volume = 0.25;
+
+  bgMusic.play().catch(function () {
+    document.addEventListener("click", function startMusic() {
+      bgMusic.play();
+      document.removeEventListener("click", startMusic);
+    });
+  });
+}
   showProfile();
 
 });
