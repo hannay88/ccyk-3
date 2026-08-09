@@ -35,7 +35,8 @@
 <script>
 let likedProfiles =
   JSON.parse(localStorage.getItem("likedProfiles")) || [];
-
+document.getElementById("detailCountry").textContent =
+  "🌍 " + (profile.country || "");
 const container = document.getElementById("likedProfiles");
 
 function renderLikedProfiles() {
@@ -66,7 +67,7 @@ function renderLikedProfiles() {
         >
 
         <h2>${profile.name} • ${profile.age}</h2>
-
+<p id="detailCountry"></p>
         <p>📍 ${profile.city}</p>
 
         <p>${profile.hobby}</p>
