@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
   // =========================
-  // DATING PROFILES
+  // DEMO DATING PROFILES
   // =========================
 
   const profiles = [
@@ -32,7 +32,76 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   // =========================
-  // HOME PROFILE CARD
+  // PHOTO COMPRESS
+  // =========================
+
+  function compressImage(file, maxWidth = 700, quality = 0.72) {
+
+    return new Promise(function (resolve, reject) {
+
+      const reader = new FileReader();
+
+      reader.onload = function (event) {
+
+        const img = new Image();
+
+        img.onload = function () {
+
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxWidth) {
+            height = Math.round(
+              height * maxWidth / width
+            );
+
+            width = maxWidth;
+          }
+
+          const canvas =
+            document.createElement("canvas");
+
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx =
+            canvas.getContext("2d");
+
+          ctx.drawImage(
+            img,
+            0,
+            0,
+            width,
+            height
+          );
+
+          const compressed =
+            canvas.toDataURL(
+              "image/jpeg",
+              quality
+            );
+
+          resolve(compressed);
+        };
+
+        img.onerror = function () {
+          reject("Image load error");
+        };
+
+        img.src = event.target.result;
+      };
+
+      reader.onerror = function () {
+        reject("File read error");
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+
+
+  // =========================
+  // HOME DATING PROFILE
   // =========================
 
   const profilePhoto =
@@ -72,10 +141,13 @@ document.addEventListener("DOMContentLoaded", function () {
       profile.photo;
 
     profileName.textContent =
-      profile.name + " • " + profile.age;
+      profile.name +
+      " • " +
+      profile.age;
 
     profileCity.textContent =
-      "📍 " + profile.city;
+      "📍 " +
+      profile.city;
 
     profileHobby.textContent =
       profile.hobby;
@@ -86,7 +158,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     currentProfile++;
 
-    if (currentProfile >= profiles.length) {
+    if (
+      currentProfile >=
+      profiles.length
+    ) {
       currentProfile = 0;
     }
 
@@ -101,7 +176,6 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   }
 
-
   if (passBtn) {
     passBtn.addEventListener(
       "click",
@@ -115,14 +189,16 @@ document.addEventListener("DOMContentLoaded", function () {
   // =========================
 
   const registerForm =
-    document.getElementById("registerForm");
+    document.getElementById(
+      "registerForm"
+    );
 
 
   if (registerForm) {
 
     registerForm.addEventListener(
       "submit",
-      function (event) {
+      async function (event) {
 
         event.preventDefault();
 
@@ -138,97 +214,113 @@ document.addEventListener("DOMContentLoaded", function () {
             : null;
 
 
-        function saveUser(photoData) {
+        let photoData = "";
 
-          const user = {
 
-            name:
-              document
-                .getElementById("registerName")
-                .value.trim(),
+        if (file) {
 
-            age:
-              document
-                .getElementById("registerAge")
-                .value,
+          try {
 
-            phone:
-              document
-                .getElementById("registerPhone")
-                .value.trim(),
+            photoData =
+              await compressImage(file);
 
-            password:
-              document
-                .getElementById("registerPassword")
-                .value,
+          } catch (error) {
 
-            city:
-              document
-                .getElementById("registerCity")
-                .value.trim(),
+            alert(
+              "Photo ကို ပြင်ဆင်မရပါ။ နောက်တစ်ပုံရွေးပါ။"
+            );
 
-            hobby:
-              document
-                .getElementById("registerHobby")
-                .value.trim(),
+            return;
+          }
+        }
 
-            photo:
-              photoData || ""
-          };
 
+        const user = {
+
+          name:
+            document
+              .getElementById(
+                "registerName"
+              )
+              .value.trim(),
+
+          age:
+            document
+              .getElementById(
+                "registerAge"
+              )
+              .value,
+
+          city:
+            document
+              .getElementById(
+                "registerCity"
+              )
+              .value.trim(),
+
+          hobby:
+            document
+              .getElementById(
+                "registerHobby"
+              )
+              .value.trim(),
+
+          phone:
+            document
+              .getElementById(
+                "registerPhone"
+              )
+              .value.trim(),
+
+          password:
+            document
+              .getElementById(
+                "registerPassword"
+              )
+              .value,
+
+          photo:
+            photoData
+        };
+
+
+        try {
 
           localStorage.setItem(
             "ccykUser",
             JSON.stringify(user)
           );
 
+        } catch (error) {
 
-          const message =
-            document.getElementById(
-              "registerMessage"
-            );
+          alert(
+            "Photo file ကြီးနေသေးပါတယ်။ တခြားပုံတစ်ပုံရွေးကြည့်ပါ။"
+          );
 
-
-          if (message) {
-
-            message.textContent =
-              "✅ Account Created Successfully";
-
-          }
-
-
-          setTimeout(function () {
-
-            window.location.href =
-              "index.html";
-
-          }, 800);
+          return;
         }
 
 
-        if (file) {
-
-          const reader =
-            new FileReader();
-
-
-          reader.onload =
-            function (event) {
-
-              saveUser(
-                event.target.result
-              );
-
-            };
+        const message =
+          document.getElementById(
+            "registerMessage"
+          );
 
 
-          reader.readAsDataURL(file);
+        if (message) {
 
-        } else {
-
-          saveUser("");
+          message.textContent =
+            "✅ Account Created Successfully";
 
         }
+
+
+        setTimeout(function () {
+
+          window.location.href =
+            "index.html";
+
+        }, 700);
 
       }
     );
@@ -240,7 +332,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // =========================
 
   const loginForm =
-    document.getElementById("loginForm");
+    document.getElementById(
+      "loginForm"
+    );
 
 
   if (loginForm) {
@@ -252,22 +346,18 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
 
 
-        const phoneInput =
-          document.getElementById("phone");
-
-        const passwordInput =
-          document.getElementById("password");
-
-
         const phone =
-          phoneInput
-            ? phoneInput.value.trim()
-            : "";
+          document
+            .getElementById("phone")
+            .value.trim();
+
 
         const password =
-          passwordInput
-            ? passwordInput.value
-            : "";
+          document
+            .getElementById(
+              "password"
+            )
+            .value;
 
 
         const savedUser =
@@ -306,7 +396,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   // =========================
-  // EDIT MY PROFILE
+  // EDIT PROFILE
   // =========================
 
   const editProfileForm =
@@ -322,7 +412,7 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.getItem(
           "ccykUser"
         )
-      );
+      ) || {};
 
 
     const editName =
@@ -361,66 +451,65 @@ document.addEventListener("DOMContentLoaded", function () {
       );
 
 
-    // Show existing information
-
-    if (savedUser) {
-
+    if (editName) {
       editName.value =
         savedUser.name || "";
-
-      editAge.value =
-        savedUser.age || "";
-
-      editCity.value =
-        savedUser.city || "";
-
-      editHobby.value =
-        savedUser.hobby || "";
-
-
-      if (
-        savedUser.photo &&
-        editPhotoPreview
-      ) {
-
-        editPhotoPreview.src =
-          savedUser.photo;
-
-      }
     }
 
+    if (editAge) {
+      editAge.value =
+        savedUser.age || "";
+    }
 
-    // Preview new photo
+    if (editCity) {
+      editCity.value =
+        savedUser.city || "";
+    }
+
+    if (editHobby) {
+      editHobby.value =
+        savedUser.hobby || "";
+    }
+
+    if (
+      editPhotoPreview &&
+      savedUser.photo
+    ) {
+
+      editPhotoPreview.src =
+        savedUser.photo;
+    }
+
 
     if (editPhotoFile) {
 
       editPhotoFile.addEventListener(
         "change",
-        function () {
+        async function () {
 
           const file =
             editPhotoFile.files[0];
 
+          if (!file) {
+            return;
+          }
 
-          if (file) {
+          try {
 
-            const reader =
-              new FileReader();
+            const preview =
+              await compressImage(file);
 
+            if (editPhotoPreview) {
 
-            reader.onload =
-              function (event) {
+              editPhotoPreview.src =
+                preview;
+            }
 
-                editPhotoPreview.src =
-                  event.target.result;
+          } catch (error) {
 
-              };
-
-
-            reader.readAsDataURL(
-              file
+            alert(
+              "Photo preview မလုပ်နိုင်ပါ။"
             );
-
           }
 
         }
@@ -428,73 +517,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // Save edited profile
-
     editProfileForm.addEventListener(
       "submit",
-      function (event) {
+      async function (event) {
 
         event.preventDefault();
 
 
-        const oldUser =
-          JSON.parse(
-            localStorage.getItem(
-              "ccykUser"
-            )
-          ) || {};
-
-
-        function saveEditedProfile(
-          photoData
-        ) {
-
-          const updatedUser = {
-
-            ...oldUser,
-
-            name:
-              editName.value.trim(),
-
-            age:
-              editAge.value,
-
-            city:
-              editCity.value.trim(),
-
-            hobby:
-              editHobby.value.trim(),
-
-            photo:
-              photoData ||
-              oldUser.photo ||
-              ""
-          };
-
-
-          localStorage.setItem(
-            "ccykUser",
-            JSON.stringify(
-              updatedUser
-            )
-          );
-
-
-          if (editMessage) {
-
-            editMessage.textContent =
-              "✅ Profile Saved";
-
-          }
-
-
-          setTimeout(function () {
-
-            window.location.href =
-              "index.html";
-
-          }, 600);
-        }
+        let photoData =
+          savedUser.photo || "";
 
 
         const newPhoto =
@@ -506,31 +537,85 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (newPhoto) {
 
-          const reader =
-            new FileReader();
+          try {
 
-
-          reader.onload =
-            function (event) {
-
-              saveEditedProfile(
-                event.target.result
+            photoData =
+              await compressImage(
+                newPhoto
               );
 
-            };
+          } catch (error) {
 
+            alert(
+              "Photo ကို Save မလုပ်နိုင်ပါ။"
+            );
 
-          reader.readAsDataURL(
-            newPhoto
-          );
-
-        } else {
-
-          saveEditedProfile(
-            oldUser.photo || ""
-          );
-
+            return;
+          }
         }
+
+
+        const updatedUser = {
+
+          ...savedUser,
+
+          name:
+            editName
+              ? editName.value.trim()
+              : "",
+
+          age:
+            editAge
+              ? editAge.value
+              : "",
+
+          city:
+            editCity
+              ? editCity.value.trim()
+              : "",
+
+          hobby:
+            editHobby
+              ? editHobby.value.trim()
+              : "",
+
+          photo:
+            photoData
+        };
+
+
+        try {
+
+          localStorage.setItem(
+            "ccykUser",
+            JSON.stringify(
+              updatedUser
+            )
+          );
+
+        } catch (error) {
+
+          alert(
+            "Photo file ကြီးနေသေးပါတယ်။ နောက်တစ်ပုံရွေးပါ။"
+          );
+
+          return;
+        }
+
+
+        if (editMessage) {
+
+          editMessage.textContent =
+            "✅ Profile Saved";
+        }
+
+
+        setTimeout(function () {
+
+          window.location.href =
+            "index.html";
+
+        }, 600);
 
       }
     );
