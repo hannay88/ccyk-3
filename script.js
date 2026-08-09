@@ -211,3 +211,92 @@ document.addEventListener("DOMContentLoaded", function () {
   showProfile();
 
 });
+const editProfileForm = document.getElementById("editProfileForm");
+
+if (editProfileForm) {
+
+  const user = JSON.parse(localStorage.getItem("ccykUser"));
+
+  const editName = document.getElementById("editName");
+  const editAge = document.getElementById("editAge");
+  const editCity = document.getElementById("editCity");
+  const editHobby = document.getElementById("editHobby");
+  const editPhotoPreview = document.getElementById("editPhotoPreview");
+  const editPhotoFile = document.getElementById("editPhotoFile");
+
+  if (user) {
+    editName.value = user.name || "";
+    editAge.value = user.age || "";
+    editCity.value = user.city || "";
+    editHobby.value = user.hobby || "";
+
+    if (user.photo) {
+      editPhotoPreview.src = user.photo;
+    }
+  }
+
+  editPhotoFile.addEventListener("change", function () {
+
+    const file = this.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        editPhotoPreview.src = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    }
+  });
+
+  editProfileForm.addEventListener("submit", function (e) {
+
+    e.preventDefault();
+
+    const oldUser =
+      JSON.parse(localStorage.getItem("ccykUser")) || {};
+
+    const saveProfile = function (photo) {
+
+      const updatedUser = {
+        ...oldUser,
+        name: editName.value.trim(),
+        age: editAge.value,
+        city: editCity.value.trim(),
+        hobby: editHobby.value.trim(),
+        photo: photo
+      };
+
+      localStorage.setItem(
+        "ccykUser",
+        JSON.stringify(updatedUser)
+      );
+
+      document.getElementById("editMessage").textContent =
+        "✅ Profile Saved";
+
+      setTimeout(function () {
+        window.location.href = "index.html";
+      }, 800);
+    };
+
+    const newPhoto = editPhotoFile.files[0];
+
+    if (newPhoto) {
+
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        saveProfile(e.target.result);
+      };
+
+      reader.readAsDataURL(newPhoto);
+
+    } else {
+
+      saveProfile(oldUser.photo || "");
+
+    }
+  });
+}
