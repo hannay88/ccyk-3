@@ -74,9 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function nextProfile() {
     const savedUser = JSON.parse(localStorage.getItem("ccykUser"));
-
-    const totalProfiles =
-      profiles.length + (savedUser ? 1 : 0);
+    const totalProfiles = profiles.length + (savedUser ? 1 : 0);
 
     currentProfile++;
 
@@ -95,208 +93,188 @@ document.addEventListener("DOMContentLoaded", function () {
     passBtn.addEventListener("click", nextProfile);
   }
 
-  const registerForm =
-    document.getElementById("registerForm");
+  const registerForm = document.getElementById("registerForm");
 
   if (registerForm) {
+    registerForm.addEventListener("submit", function (event) {
+      event.preventDefault();
 
-    registerForm.addEventListener(
-      "submit",
-      function (event) {
+      const photoInput =
+        document.getElementById("registerPhotoFile");
 
-        event.preventDefault();
+      const file =
+        photoInput && photoInput.files
+          ? photoInput.files[0]
+          : null;
 
-        const photoInput =
-          document.getElementById("registerPhotoFile");
-
-        const file =
-          photoInput && photoInput.files
-            ? photoInput.files[0]
-            : null;
-
-        const saveUser = function (photoData) {
-
-          const user = {
-            name:
-              document.getElementById("registerName").value.trim(),
-
-            age:
-              document.getElementById("registerAge").value,
-
-            city:
-              document.getElementById("registerCity").value.trim(),
-
-            hobby:
-              document.getElementById("registerHobby").value.trim(),
-
-            photo:
-              photoData || "",
-
-            phone:
-              document.getElementById("registerPhone").value.trim(),
-
-            password:
-              document.getElementById("registerPassword").value
-          };
-
-          localStorage.setItem(
-            "ccykUser",
-            JSON.stringify(user)
-          );
-
-          const message =
-            document.getElementById("registerMessage");
-
-          if (message) {
-            message.textContent =
-              "✅ Account Created Successfully";
-          }
-
-          setTimeout(function () {
-            window.location.href = "index.html";
-          }, 800);
+      function saveUser(photoData) {
+        const user = {
+          name:
+            document.getElementById("registerName").value.trim(),
+          age:
+            document.getElementById("registerAge").value,
+          city:
+            document.getElementById("registerCity").value.trim(),
+          hobby:
+            document.getElementById("registerHobby").value.trim(),
+          photo:
+            photoData || "",
+          phone:
+            document.getElementById("registerPhone").value.trim(),
+          password:
+            document.getElementById("registerPassword").value
         };
+
+        localStorage.setItem("ccykUser", JSON.stringify(user));
+
+        const message =
+          document.getElementById("registerMessage");
+
+        if (message) {
+          message.textContent =
+            "✅ Account Created Successfully";
+        }
+
+        setTimeout(function () {
+          window.location.href = "index.html";
+        }, 800);
+      }
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          saveUser(e.target.result);
+        };
+
+        reader.readAsDataURL(file);
+      } else {
+        saveUser("");
+      }
+    });
+  }
+
+  const loginForm = document.getElementById("loginForm");
+
+  if (loginForm) {
+    loginForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const phone =
+        document.getElementById("phone").value.trim();
+
+      const password =
+        document.getElementById("password").value;
+
+      const savedUser =
+        JSON.parse(localStorage.getItem("ccykUser"));
+
+      if (
+        savedUser &&
+        savedUser.phone === phone &&
+        savedUser.password === password
+      ) {
+        window.location.href = "index.html";
+      } else {
+        alert("Wrong Phone or Password");
+      }
+    });
+  }
+
+  const editProfileForm =
+    document.getElementById("editProfileForm");
+
+  if (editProfileForm) {
+    const savedUser =
+      JSON.parse(localStorage.getItem("ccykUser"));
+
+    const editName = document.getElementById("editName");
+    const editAge = document.getElementById("editAge");
+    const editCity = document.getElementById("editCity");
+    const editHobby = document.getElementById("editHobby");
+    const editPhotoPreview =
+      document.getElementById("editPhotoPreview");
+    const editPhotoFile =
+      document.getElementById("editPhotoFile");
+    const editMessage =
+      document.getElementById("editMessage");
+
+    if (savedUser) {
+      editName.value = savedUser.name || "";
+      editAge.value = savedUser.age || "";
+      editCity.value = savedUser.city || "";
+      editHobby.value = savedUser.hobby || "";
+
+      if (savedUser.photo) {
+        editPhotoPreview.src = savedUser.photo;
+      }
+    }
+
+    if (editPhotoFile) {
+      editPhotoFile.addEventListener("change", function () {
+        const file = editPhotoFile.files[0];
 
         if (file) {
           const reader = new FileReader();
 
           reader.onload = function (e) {
-            saveUser(e.target.result);
+            editPhotoPreview.src = e.target.result;
           };
 
           reader.readAsDataURL(file);
-        } else {
-          saveUser("");
         }
-      }
-    );
-  }
+      });
+    }
 
-  const loginForm =
-    document.getElementById("loginForm");
+    editProfileForm.addEventListener("submit", function (event) {
+      event.preventDefault();
 
-  if (loginForm) {
+      const oldUser =
+        JSON.parse(localStorage.getItem("ccykUser")) || {};
 
-    loginForm.addEventListener(
-      "submit",
-      function (event) {
+      function saveEditedProfile(photoData) {
+        const updatedUser = {
+          ...oldUser,
+          name: editName.value.trim(),
+          age: editAge.value,
+          city: editCity.value.trim(),
+          hobby: editHobby.value.trim(),
+          photo: photoData || oldUser.photo || ""
+        };
 
-        event.preventDefault();
+        localStorage.setItem(
+          "ccykUser",
+          JSON.stringify(updatedUser)
+        );
 
-        const phone =
-          document.getElementById("phone").value.trim();
+        if (editMessage) {
+          editMessage.textContent = "✅ Profile Saved";
+        }
 
-        const password =
-          document.getElementById("password").value;
-
-        const savedUser =
-          JSON.parse(
-            localStorage.getItem("ccykUser")
-          );
-
-        if (
-          savedUser &&
-          savedUser.phone === phone &&
-          savedUser.password === password
-        ) {
-          alert("Welcome " + savedUser.name);
+        setTimeout(function () {
           window.location.href = "index.html";
-        } else {
-          alert("Wrong Phone or Password");
-        }
+        }, 600);
       }
-    );
+
+      const newPhoto =
+        editPhotoFile && editPhotoFile.files
+          ? editPhotoFile.files[0]
+          : null;
+
+      if (newPhoto) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          saveEditedProfile(e.target.result);
+        };
+
+        reader.readAsDataURL(newPhoto);
+      } else {
+        saveEditedProfile(oldUser.photo || "");
+      }
+    });
   }
 
   showProfile();
 
 });
-const editProfileForm = document.getElementById("editProfileForm");
-
-if (editProfileForm) {
-
-  const user = JSON.parse(localStorage.getItem("ccykUser"));
-
-  const editName = document.getElementById("editName");
-  const editAge = document.getElementById("editAge");
-  const editCity = document.getElementById("editCity");
-  const editHobby = document.getElementById("editHobby");
-  const editPhotoPreview = document.getElementById("editPhotoPreview");
-  const editPhotoFile = document.getElementById("editPhotoFile");
-
-  if (user) {
-    editName.value = user.name || "";
-    editAge.value = user.age || "";
-    editCity.value = user.city || "";
-    editHobby.value = user.hobby || "";
-
-    if (user.photo) {
-      editPhotoPreview.src = user.photo;
-    }
-  }
-
-  editPhotoFile.addEventListener("change", function () {
-
-    const file = this.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = function (e) {
-        editPhotoPreview.src = e.target.result;
-      };
-
-      reader.readAsDataURL(file);
-    }
-  });
-
-  editProfileForm.addEventListener("submit", function (e) {
-
-    e.preventDefault();
-
-    const oldUser =
-      JSON.parse(localStorage.getItem("ccykUser")) || {};
-
-    const saveProfile = function (photo) {
-
-      const updatedUser = {
-        ...oldUser,
-        name: editName.value.trim(),
-        age: editAge.value,
-        city: editCity.value.trim(),
-        hobby: editHobby.value.trim(),
-        photo: photo
-      };
-
-      localStorage.setItem(
-        "ccykUser",
-        JSON.stringify(updatedUser)
-      );
-
-      document.getElementById("editMessage").textContent =
-        "✅ Profile Saved";
-
-      setTimeout(function () {
-        window.location.href = "index.html";
-      }, 800);
-    };
-
-    const newPhoto = editPhotoFile.files[0];
-
-    if (newPhoto) {
-
-      const reader = new FileReader();
-
-      reader.onload = function (e) {
-        saveProfile(e.target.result);
-      };
-
-      reader.readAsDataURL(newPhoto);
-
-    } else {
-
-      saveProfile(oldUser.photo || "");
-
-    }
-  });
-}
