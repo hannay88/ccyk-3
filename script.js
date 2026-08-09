@@ -276,7 +276,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 "registerAge"
               )
               .value,
-
+country:
+  document
+    .getElementById("registerCountry")
+    .value.trim(),
           city:
             document
               .getElementById(
