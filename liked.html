@@ -55,7 +55,21 @@ function renderLikedProfiles() {
 
     const card = document.createElement("div");
     card.className = "card";
+card.style.cursor = "pointer";
 
+card.addEventListener("click", function(event) {
+
+  if (event.target.tagName === "BUTTON") {
+    return;
+  }
+
+  localStorage.setItem(
+    "selectedProfile",
+    JSON.stringify(profile)
+  );
+
+  window.location.href = "detail.html";
+});
     card.innerHTML = `
       <div class="profile-card">
 
