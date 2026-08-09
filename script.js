@@ -41,12 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const savedUser = JSON.parse(localStorage.getItem("ccykUser"));
 
     if (savedUser && currentProfile === 0) {
-
-      if (savedUser.photo && savedUser.photo.trim() !== "") {
-        profilePhoto.src = savedUser.photo;
-      } else {
-        profilePhoto.src = "https://picsum.photos/seed/myprofile/500/600";
-      }
+      profilePhoto.src =
+        savedUser.photo ||
+        "https://picsum.photos/seed/myprofile/500/600";
 
       profileName.textContent =
         savedUser.name + " • " + savedUser.age;
@@ -109,45 +106,68 @@ document.addEventListener("DOMContentLoaded", function () {
 
         event.preventDefault();
 
-        const user = {
-          name:
-            document.getElementById("registerName").value.trim(),
+        const photoInput =
+          document.getElementById("registerPhotoFile");
 
-          age:
-            document.getElementById("registerAge").value,
+        const file =
+          photoInput && photoInput.files
+            ? photoInput.files[0]
+            : null;
 
-          city:
-            document.getElementById("registerCity").value.trim(),
+        const saveUser = function (photoData) {
 
-          hobby:
-            document.getElementById("registerHobby").value.trim(),
+          const user = {
+            name:
+              document.getElementById("registerName").value.trim(),
 
-          photo:
-            document.getElementById("registerPhoto").value.trim(),
+            age:
+              document.getElementById("registerAge").value,
 
-          phone:
-            document.getElementById("registerPhone").value.trim(),
+            city:
+              document.getElementById("registerCity").value.trim(),
 
-          password:
-            document.getElementById("registerPassword").value
+            hobby:
+              document.getElementById("registerHobby").value.trim(),
+
+            photo:
+              photoData || "",
+
+            phone:
+              document.getElementById("registerPhone").value.trim(),
+
+            password:
+              document.getElementById("registerPassword").value
+          };
+
+          localStorage.setItem(
+            "ccykUser",
+            JSON.stringify(user)
+          );
+
+          const message =
+            document.getElementById("registerMessage");
+
+          if (message) {
+            message.textContent =
+              "✅ Account Created Successfully";
+          }
+
+          setTimeout(function () {
+            window.location.href = "index.html";
+          }, 800);
         };
 
-        localStorage.setItem(
-          "ccykUser",
-          JSON.stringify(user)
-        );
+        if (file) {
+          const reader = new FileReader();
 
-        const message =
-          document.getElementById("registerMessage");
+          reader.onload = function (e) {
+            saveUser(e.target.result);
+          };
 
-        if (message) {
-          message.textContent =
-            "✅ Account Created Successfully";
+          reader.readAsDataURL(file);
+        } else {
+          saveUser("");
         }
-
-        setTimeout(function () {
-          window.location.href = "index.html";
-        }, 1000);
       }
     );
   }
