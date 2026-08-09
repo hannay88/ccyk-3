@@ -169,12 +169,39 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  if (likeBtn) {
-    likeBtn.addEventListener(
-      "click",
-      nextProfile
-    );
-  }
+ if (likeBtn) {
+  likeBtn.addEventListener("click", function () {
+
+    const savedUser =
+      JSON.parse(localStorage.getItem("ccykUser"));
+
+    let profile;
+
+    if (savedUser && currentProfile === 0) {
+      profile = savedUser;
+    } else {
+      const index = savedUser
+        ? currentProfile - 1
+        : currentProfile;
+
+      profile = profiles[index % profiles.length];
+    }
+
+    if (profile) {
+      let likedProfiles =
+        JSON.parse(localStorage.getItem("likedProfiles")) || [];
+
+      likedProfiles.push(profile);
+
+      localStorage.setItem(
+        "likedProfiles",
+        JSON.stringify(likedProfiles)
+      );
+    }
+
+    nextProfile();
+  });
+}
 
   if (passBtn) {
     passBtn.addEventListener(
