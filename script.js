@@ -453,7 +453,10 @@ country:
       document.getElementById(
         "editAge"
       );
-
+const editCountry =
+  document.getElementById(
+    "editCountry"
+  );
     const editCity =
       document.getElementById(
         "editCity"
