@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="my">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CCYK Dating - Liked Profiles</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <h1>💗 CCYK Dating</h1>
+  <p>ချစ်ခြင်း ရင်ခုန်</p>
+</header>
+
+<main>
+
+  <div class="card">
+    <h2>❤️ Liked Profiles</h2>
+    <p>သင် Like လုပ်ထားသော Profile များ</p>
+  </div>
+
+  <div id="likedProfiles"></div>
+
+  <div class="card">
+    <a href="index.html">
+      <button>← Back Home</button>
+    </a>
+  </div>
+
+</main>
+
+<script>
+let likedProfiles =
+  JSON.parse(localStorage.getItem("likedProfiles")) || [];
+
+const container = document.getElementById("likedProfiles");
+
+function renderLikedProfiles() {
+
+  container.innerHTML = "";
+
+  if (likedProfiles.length === 0) {
+    container.innerHTML = `
+      <div class="card">
+        <p>❤️ Like လုပ်ထားတဲ့ Profile မရှိသေးပါ။</p>
+      </div>
+    `;
+    return;
+  }
+
+  likedProfiles.forEach(function(profile, index) {
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <div class="profile-card">
+
+        <img
+          src="${profile.photo}"
+          alt="Profile"
+          style="width:100%; border-radius:20px;"
+        >
+
+        <h2>${profile.name} • ${profile.age}</h2>
+
+        <p>📍 ${profile.city}</p>
+
+        <p>${profile.hobby}</p>
+
+        <button onclick="removeLikedProfile(${index})">
+          🗑️ Remove
+        </button>
+
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+function removeLikedProfile(index) {
+
+  likedProfiles.splice(index, 1);
+
+  localStorage.setItem(
+    "likedProfiles",
+    JSON.stringify(likedProfiles)
+  );
+
+  renderLikedProfiles();
+}
+
+renderLikedProfiles();
+</script>
+
+</body>
+</html>
