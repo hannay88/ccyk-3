@@ -492,7 +492,10 @@ const editCountry =
       editAge.value =
         savedUser.age || "";
     }
-
+if (editCountry) {
+  editCountry.value =
+    savedUser.country || "";
+}
     if (editCity) {
       editCity.value =
         savedUser.city || "";
@@ -600,7 +603,10 @@ const editCountry =
             editAge
               ? editAge.value
               : "",
-
+country:
+  editCountry
+    ? editCountry.value.trim()
+    : "",
           city:
             editCity
               ? editCity.value.trim()
