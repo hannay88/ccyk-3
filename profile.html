@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCYK - My Profile</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+<h1>❤️ CCYK</h1>
+<p>My Profile</p>
+</header>
+
+<main>
+
+<div class="card">
+
+<h2>👤 Edit Profile</h2>
+
+<img id="editPhotoPreview"
+src="https://picsum.photos/seed/myprofile/500/600"
+alt="Profile"
+style="width:100%;border-radius:15px;margin-bottom:15px;">
+
+<form id="editProfileForm">
+
+<label>အမည်</label>
+<input type="text" id="editName" required>
+
+<label>အသက်</label>
+<input type="number" id="editAge" min="18" required>
+
+<label>မြို့</label>
+<input type="text" id="editCity" required>
+
+<label>ဝါသနာ</label>
+<input type="text" id="editHobby" required>
+
+<label>Profile Photo</label>
+<input type="file" id="editPhotoFile" accept="image/*">
+
+<button type="submit">💾 Save Profile</button>
+
+</form>
+
+<p id="editMessage"></p>
+
+<a href="index.html">← Home</a>
+
+</div>
+
+</main>
+
+<script src="script.js"></script>
+
+</body>
+</html>
