@@ -666,14 +666,18 @@ country:
 const bgMusic = document.getElementById("bgMusic");
 
 if (bgMusic) {
-  bgMusic.volume = 0.25;
+  bgMusic.volume = 0.35;
+  bgMusic.load();
 
-  bgMusic.play().catch(function () {
-    document.addEventListener("click", function startMusic() {
-      bgMusic.play();
-      document.removeEventListener("click", startMusic);
-    });
-  });
+  function startMusic() {
+    bgMusic.play().catch(function () {});
+  }
+
+  startMusic();
+
+  document.addEventListener("pointerdown", startMusic, { once: true });
+  document.addEventListener("touchstart", startMusic, { once: true });
+  document.addEventListener("click", startMusic, { once: true });
 }
   showProfile();
 
